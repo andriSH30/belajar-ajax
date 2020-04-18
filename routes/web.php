@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/about', 'pageController@AboutPage');
+
+Route::get('/','mahasiswaController@index');
+Route::get('/mahasiswa/get-data','mahasiswaController@getDataMahasiswa');
