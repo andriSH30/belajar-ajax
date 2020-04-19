@@ -18,3 +18,7 @@ Route::get('/about', 'pageController@AboutPage');
 
 Route::get('/','mahasiswaController@index');
 Route::get('/mahasiswa/get-data','mahasiswaController@getDataMahasiswa');
+Route::post('/mahasiswa/add','mahasiswaController@store');
+Route::get('/mahasiswa/tabel','mahasiswaController@tabel');
+
+Route::resource('mahasiswa','mahasiswaController');

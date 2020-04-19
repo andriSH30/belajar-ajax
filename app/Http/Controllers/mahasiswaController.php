@@ -38,6 +38,11 @@ class mahasiswaController extends Controller
     public function store(Request $request)
     {
         //
+            $mahasiswa = new mahasiswa;
+            $mahasiswa->nama = $request->nama;
+            $mahasiswa->alamat = $request->alamat;
+            $mahasiswa->Save();
+
     }
 
     /**
@@ -85,7 +90,19 @@ class mahasiswaController extends Controller
         //
     }
 
-    public function getDataMahasiswa(){
-        return Datatables::of(mahasiswa::all())->make(true);
+    public function tabel(){
+        return view('tabelMahasiswa');
     }
+
+    public function getDataMahasiswa(){
+        return Datatables::of(mahasiswa::all())->addIndexColumn()
+        ->addColumn('aksi', function($row){
+               $btn = '<a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Edit" class="edit btn btn-primary btn-sm editMahasiswat">Edit</a>';
+               $btn = $btn.' <a href="javascript:void(0)" data-toggle="tooltip"  data-id="'.$row->id.'" data-original-title="Delete" class="btn btn-danger btn-sm deleteMahasiswa">Delete</a>';
+                return $btn;
+        })
+        ->rawColumns(['aksi'])
+        ->make(true);
+    }
+
 }
