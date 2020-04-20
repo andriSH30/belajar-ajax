@@ -48,4 +48,92 @@ $(document).ready(function(){
       });
     });
 
+
+    //DELETE MAHASISWA
+    $('body').on('click','.deleteMahasiswa',function(){
+        var mahasiswa_id = $(this).data("id");
+        var mahasiswa_nama = $(this).data("nama");
+        Swal.fire({
+            title: 'Peringatan',
+            text: "Kamu yakin mau menghapus "+mahasiswa_nama+" ?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes, delete it!'
+          }).then((result) => {
+            if (result.value) {
+                $.ajax({
+                    type: "GET",
+                    url: "/mahasiswa/delete/"+mahasiswa_id,
+                    success: function(data){
+
+                        Swal.fire(
+                            'Sukses!',
+                            'Berhasil menghapus '+mahasiswa_nama,
+                            'success'
+                          )
+                          loadMahasiswa();
+                    },
+                    error: function(data){
+                        Swal.fire(
+                            'Oops!',
+                            'Error :'.data,
+                            'danger'
+                          )
+                    }
+
+                });
+
+            }
+          })
+    });
+
+    $('body').on('click','.editMahasiswa',function(){
+        var nama = $(this).data('nama');
+        var alamat = $(this).data('alamat');
+        var id = $(this).data('id');
+
+
+        $('.edit-nama').val(nama);
+        $('.edit-alamat').val(alamat);
+        $('#modalEditMahasiswa').modal('show');
+
+        $('.form-edit-mahasiswa').on('submit',function(e){
+            e.preventDefault();
+            var data = $('.form-edit-mahasiswa').serialize();
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "/mahasiswa/edit/"+id,
+                success: function(data){
+
+                    Swal.fire({
+                        position: 'center',
+                        icon: 'success',
+                        title: 'Sukses!',
+                        text: 'Berhasil memperbarui '+nama,
+
+                      });
+                      $('.form-tambah-mahasiswa').trigger("reset");
+                      $('#modalEditMahasiswa').modal('hide');
+                      loadMahasiswa();
+
+
+                },
+                error: function(data){
+                    Swal.fire({
+                        icon: 'error',
+                        position: 'center',
+                        title: 'Error!',
+                        text: data,
+                        showConfirmButton: false,
+
+                    });
+                }
+            });
+        });
+
+    });
+
 });
